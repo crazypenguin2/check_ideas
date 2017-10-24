@@ -4,21 +4,23 @@
 #include <functional>
 #include <iostream>
 
+using callback_t = std::function<void()>;
+
 class unit
 {
 public:
-    unit(std::function<void()> c)
+    unit(callback_t c)
     :callback{c}
     {}
 
     unit() = delete;
 
-    std::function<void()> get_handler()
+    auto get_handler()
     {
-        return std::bind(&unit::handler, this);
+        return [this](){ handler(); };
     }
 private:
-    std::function<void()> callback;
+    callback_t callback;
 
     void handler()
     {
@@ -30,9 +32,9 @@ private:
 class end_unit
 {
 public:
-    std::function<void()> get_handler()
+    auto get_handler()
     {
-        return std::bind(&end_unit::handler, this);
+        return [this](){ handler(); };
     }
 private:
     void handler()
@@ -44,7 +46,7 @@ private:
 class start_unit
 {
 public:
-    start_unit(std::function<void()> c)
+    start_unit(callback_t c)
     :callback{c}
     {}
 
@@ -61,7 +63,7 @@ public:
         }
     }
 private:
-    std::function<void()> callback;
+    callback_t callback;
 };
 
 #endif //UNIT_HPP
