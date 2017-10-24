@@ -4,7 +4,7 @@
 #include <functional>
 #include <iostream>
 
-using callback_t = std::function<void()>;
+using callback_t = std::function<void(std::string&&)>;
 
 class unit
 {
@@ -17,15 +17,15 @@ public:
 
     auto get_handler()
     {
-        return [this](){ handler(); };
+        return [this](std::string&& s){ handler(std::move(s)); };
     }
 private:
     callback_t callback;
 
-    void handler()
+    void handler(std::string&& s)
     {
-        std::cout<< "unit:";
-        callback();
+        s += "unit:";
+        callback(std::move(s));
     }
 };
 
@@ -34,12 +34,13 @@ class end_unit
 public:
     auto get_handler()
     {
-        return [this](){ handler(); };
+        return [this](std::string&& s){ handler(std::move(s)); };
     }
 private:
-    void handler()
+    void handler(std::string&& s)
     {
-        std::cout<< "end\n";
+        s += "end\n";
+        std::cout<< s;
     }
 };
 
@@ -58,8 +59,8 @@ public:
         {
             std::string s;
             std::cin >> s;
-            std::cout << s<< ":";
-            callback();
+            s += ":";
+            callback(std::move(s));
         }
     }
 private:
