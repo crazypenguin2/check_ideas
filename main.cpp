@@ -3,7 +3,7 @@
 
 int main()
 {
-    auto x = pipe<start, end>();
+    auto x = pipe<start_unit, unit, unit, end_unit>();
     x();
 }
 

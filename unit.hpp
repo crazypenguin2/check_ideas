@@ -27,12 +27,12 @@ private:
     }
 };
 
-class end
+class end_unit
 {
 public:
     std::function<void()> get_handler()
     {
-        return std::bind(&end::handler, this);
+        return std::bind(&end_unit::handler, this);
     }
 private:
     void handler()
@@ -41,14 +41,14 @@ private:
     }
 };
 
-class start
+class start_unit
 {
 public:
-    start(std::function<void()> c)
+    start_unit(std::function<void()> c)
     :callback{c}
     {}
 
-    start() = delete;
+    start_unit() = delete;
 
     void operator()()
     {
