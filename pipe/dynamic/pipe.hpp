@@ -1,5 +1,5 @@
-#ifndef COMPOSITOR_HPP
-#define COMPOSITOR_HPP
+#ifndef PIPE_HPP
+#define PIPE_HPP
 
 #include "unit.hpp"
 
@@ -52,4 +52,4 @@ private:
     start_unit start;
 };
 
-#endif //COMPOSITOR_HPP
+#endif //PIPE_HPP
