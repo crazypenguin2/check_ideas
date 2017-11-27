@@ -3,9 +3,6 @@
 
 int main()
 {
-    using branch1 = pipe<unit, unit, end_unit>;
-    using branch2 = pipe<unit, end_unit>;
-    using par = parallel<branch1, branch2, end_unit>;
-    auto x = start_unit<par>();
-    x();
+    auto p = make_pipe(start_unit_t{}, unit_t{}, unit_t{}, end_unit_t{});
+    p();
 }

@@ -2,31 +2,38 @@
 #define UNIT_HPP
 
 #include <cstdint>
-#include <functional>
 #include <iostream>
+#include "pipe.hpp"
 
-template<class... E> class pipe;
-
-class unit
+template<class T = int>
+class unit : T
 {
 public:
-    void handler(uint64_t& n)
+    void handler(uint64_t n)
     {
         n -= 10;
+        static_cast<T*>(this)->handler(n);
     }
 };
 
-class end_unit
+template<>
+class unit<int> {};
+
+template<class T = int>
+class end_unit : T
 {
 public:
-    void handler(uint64_t& n)
+    void handler(uint64_t n)
     {
         std::cout<< n << '\n';
     }
 };
 
-template<class... E>
-class start_unit : pipe<E...>
+template<>
+class end_unit<int> {};
+
+template<class T = int>
+class start_unit : T
 {
 public:
     void operator()()
@@ -36,9 +43,16 @@ public:
             volatile uint64_t n = 5;
             uint64_t copy_n = n;
             copy_n += 25;
-            pipe<E...>::handler(copy_n);
+            static_cast<T*>(this)->handler(copy_n);
         }
     }
 };
+
+template<>
+class start_unit<int> {};
+
+using start_unit_t = start_unit<>;
+using unit_t = unit<>;
+using end_unit_t = end_unit<>;
 
 #endif //UNIT_HPP
